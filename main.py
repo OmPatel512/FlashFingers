@@ -1,48 +1,38 @@
-import tkinter
 from tkinter import *
+import time
+import threading
+import random
 
-prog_running = True
-
-
-#TODO -1 Make Sample Text File
-
-#TODO -2 Connect Sample text File with program
-
-with open("Sample Texts.txt") as data:
-    text = data.read()
-
-#Converting text into list
-
-text_elements = []
-for i in text:
-    text_elements.append(i)
+class FlashFingersGUI:
 
 
+    def __int__(self):
+        self.root = Tk()
+        self.root.title("FlashFingers")
+        self.root.geometry("800x600")
 
-#TODO -3 Make GUI Using tkinter
+        self.texts = open("sample Texts.txt", "r").read().split("\n")
 
-window = Tk()
-window.title("FlashFingers")
-window.minsize(800,600)
+        self.frame = Frame(self.root)
 
-text_box = Text(height=10, width=64,font=('arial',17),padx=20)
-text_box.insert(tkinter.END,chars=text)
-text_box.grid(column=0,row=0)
+        self.sample_label = Label(self.frame, text=random.choice(self.texts),font=("Helvetica", 15))
+        self.sample_label.grid(row=0,column=0,columnspan=2,padx=5,pady=10)
 
-text_entry = Entry()
-text_entry.grid(column=0,row=1)
+        self.input_entry = Entry(self.frame, width=40, font=("Helvetica",18))
+        self.input_entry.grid(row=1,column=0,columnspan=2,padx=5,pady=10)
+        self.input_entry.bind("<KeyDown>", self.start)
 
-user_text = text_entry.get()
+        self.speed_label = Label(self.frame, text="Speed:\n 0.00 WPM", font=("Helvetica", 15))
+        self.speed_label.grid(row=2, column=0, columnspan=2, padx=5, pady=10)
 
+        self.reset_button = Button(self.frame, text="Reset", command=self.reset)
+        self.reset_button.grid(row=4, column=0, columnspan=2, padx=5, pady=10)
 
-user_text_elements = []
-for i in user_text:
-    i = str(i)
-    user_text_elements.append(i)
+        self.frame.pack(expand=True)
 
+        self.counter = 0
+        self.running = True
 
-if user_text_elements[0] == text_elements[0]:
-    text_entry.config(fg='green')
+        self.root.mainloop()
 
-window.mainloop()
 
